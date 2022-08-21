@@ -25,9 +25,9 @@ func handleError(err error) {
 func dumpBuildManifestData(url string) string {
 	val := ""
 	if strings.HasSuffix(url, "buildManifest.js") {
-		page := rod.New().MustConnect()
+		page := rod.New()
 		err := rod.Try(func() {
-			loaded_page := page.Timeout(10 * time.Second).MustPage(url).MustWaitLoad()
+			loaded_page := page.Timeout(10 * time.Second).MustConnect().MustPage(url).MustWaitLoad()
 			loaded_page.MustEval("() => eval(document.documentElement.innerText)")
 			val = loaded_page.MustEval("() => JSON.stringify(self.__BUILD_MANIFEST)").Str()
 		})
@@ -37,9 +37,9 @@ func dumpBuildManifestData(url string) string {
 		}
 
 	} else {
-		page := rod.New().MustConnect()
+		page := rod.New()
 		err := rod.Try(func() {
-			loaded_page := page.Timeout(10 * time.Second).MustPage(url).MustWaitLoad()
+			loaded_page := page.Timeout(10 * time.Second).MustConnect().MustPage(url).MustWaitLoad()
 			val = loaded_page.MustEval("() => JSON.stringify(self.__BUILD_MANIFEST)").Str()
 		})
 

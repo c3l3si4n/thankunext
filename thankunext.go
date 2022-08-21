@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/url"
 	"os"
 	"strings"
 	"time"
@@ -25,17 +26,17 @@ func handleError(err error) {
 	}
 }
 
-func dumpBuildManifestData(url string) string {
+func dumpBuildManifestData(input_url string) string {
 	val := ""
 
 	type buildManifestStruct struct {
 		SortedPages []string `json:sortedPages`
 	}
 
-	if strings.HasSuffix(url, "buildManifest.js") {
+	if strings.HasSuffix(input_url, "buildManifest.js") {
 		page := rod.New()
 		err := rod.Try(func() {
-			loaded_page := page.Timeout(10 * time.Second).MustConnect().MustPage(url).MustWaitLoad()
+			loaded_page := page.Timeout(10 * time.Second).MustConnect().MustPage(input_url).MustWaitLoad()
 			loaded_page.MustEval("() => eval(document.documentElement.innerText)")
 			val = loaded_page.MustEval("() => JSON.stringify(self.__BUILD_MANIFEST)").Str()
 
@@ -48,7 +49,7 @@ func dumpBuildManifestData(url string) string {
 	} else {
 		page := rod.New()
 		err := rod.Try(func() {
-			loaded_page := page.Timeout(10 * time.Second).MustConnect().MustPage(url).MustWaitLoad()
+			loaded_page := page.Timeout(10 * time.Second).MustConnect().MustPage(input_url).MustWaitLoad()
 			val = loaded_page.MustEval("() => JSON.stringify(self.__BUILD_MANIFEST)").Str()
 		})
 
@@ -64,9 +65,14 @@ func dumpBuildManifestData(url string) string {
 			return ""
 		}
 		sortedPages := buildManifestUnmarshal.SortedPages
-
+		u, _ := url.Parse(input_url)
+		u.RawQuery = ""
+		u.Fragment = ""
+		u.Path = ""
 		for _, element := range sortedPages {
-			fmt.Println(element)
+			u_new := u
+			u_new.Path = element
+			fmt.Printf("%s\n", u_new.String())
 		}
 		return val
 	} else {

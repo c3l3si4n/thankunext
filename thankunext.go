@@ -43,6 +43,7 @@ func dumpBuildManifestData(input_url string) string {
 		})
 
 		if err != nil {
+			fmt.Println("Error on loading rod browser.", err)
 			return ""
 		}
 
@@ -54,6 +55,7 @@ func dumpBuildManifestData(input_url string) string {
 		})
 
 		if err != nil {
+			fmt.Println("Error on loading rod browser.", err)
 			return ""
 		}
 	}

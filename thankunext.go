@@ -106,7 +106,7 @@ func main() {
 	fmt.Fprintln(os.Stderr, `<!-- thankunext v0.01, made by @c3l3si4n -->`)
 
 	if len(os.Args[1:]) > 0 {
-		target := os.Args[1]
+		target := strings.TrimSuffix(os.Args[1], "/")
 		pageContent := getPageContent(target)
 		buildManifestPath := getBuildManifestPath(pageContent)
 		buildManifestContent := getBuildManifestContent(target + buildManifestPath)

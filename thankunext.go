@@ -39,7 +39,7 @@ func getPageContent(url string) string {
 	resp, err := client.Do(req)
 
 	if err != nil {
-		fmt.Println("Error accessing url.", err)
+		fmt.Println("Error when accessing the url.", err)
 		return ""
 	}
 
@@ -47,7 +47,7 @@ func getPageContent(url string) string {
 	body, err := io.ReadAll(resp.Body)
 
 	if err != nil {
-		fmt.Println("Error loading page content.", err)
+		fmt.Println("Error when loading page content.", err)
 		return ""
 	}
 
@@ -76,7 +76,7 @@ func getBuildManifestContent(buildManifestPath string) string {
 	body, err := io.ReadAll(resp.Body)
 
 	if err != nil {
-		fmt.Println("Error loading buildManifest contents.", err)
+		fmt.Println("Error when loading buildManifest content.", err)
 		return ""
 	}
 

@@ -109,6 +109,10 @@ func main() {
 		target := strings.TrimSuffix(os.Args[1], "/")
 		pageContent := getPageContent(target)
 		buildManifestPath := getBuildManifestPath(pageContent)
+		if buildManifestPath == "" {
+			fmt.Fprintln(os.Stderr, "_buildManifest.js wasn't found. Is this site really running Next.js?")
+			os.Exit(0)
+		}
 		buildManifestContent := getBuildManifestContent(target + buildManifestPath)
 		paths := parseBuildManifestContent(buildManifestContent)
 

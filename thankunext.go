@@ -30,8 +30,8 @@ func getPageContent(url string) string {
 	req, err := http.NewRequest("GET", url, nil)
 
 	if err != nil {
-		fmt.Println("Error on NewRequest.", err)
-		return ""
+		fmt.Fprintln(os.Stderr, "Error on NewRequest.", err)
+		os.Exit(1)
 	}
 
 	req.Header.Add("user-agent", "thankunext/1.0")
@@ -39,16 +39,16 @@ func getPageContent(url string) string {
 	resp, err := client.Do(req)
 
 	if err != nil {
-		fmt.Println("Error when accessing the url.", err)
-		return ""
+		fmt.Fprintln(os.Stderr, "Error when accessing the url.", err)
+		os.Exit(1)
 	}
 
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
 
 	if err != nil {
-		fmt.Println("Error when loading page content.", err)
-		return ""
+		fmt.Fprintln(os.Stderr, "Error when loading page content.", err)
+		os.Exit(1)
 	}
 
 	return string(body)
@@ -59,8 +59,8 @@ func getBuildManifestContent(buildManifestPath string) string {
 	req, err := http.NewRequest("GET", buildManifestPath, nil)
 
 	if err != nil {
-		fmt.Println("Error on NewRequest.", err)
-		return ""
+		fmt.Fprintln(os.Stderr, "Error on NewRequest.", err)
+		os.Exit(1)
 	}
 
 	req.Header.Add("user-agent", "thankunext/1.0")
@@ -68,16 +68,16 @@ func getBuildManifestContent(buildManifestPath string) string {
 	resp, err := client.Do(req)
 
 	if err != nil {
-		fmt.Println("Error accessing buildManifest content.", err)
-		return ""
+		fmt.Fprintln(os.Stderr, "Error accessing buildManifest content.", err)
+		os.Exit(1)
 	}
 
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
 
 	if err != nil {
-		fmt.Println("Error when loading buildManifest content.", err)
-		return ""
+		fmt.Fprintln(os.Stderr, "Error when loading buildManifest content.", err)
+		os.Exit(1)
 	}
 
 	return string(body)
